@@ -196,7 +196,7 @@ export const PORTFOLIO_DATA = {
       tags: ["System Design", "Inventory", "Database"],
       github: "https://github.com/KaranJung/Product-Management-System-PMS-",
       live: "#",
-      image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80",
+      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
     },
     {
       title: "Premium Agency Branding",

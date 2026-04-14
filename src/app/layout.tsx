@@ -44,6 +44,10 @@ export const metadata: Metadata = {
     description:
       "Crafting immersive digital experiences from Kathmandu, Nepal.",
   },
+  icons: {
+    icon: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
