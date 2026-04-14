@@ -128,11 +128,11 @@ export const PORTFOLIO_DATA = {
   projects: [
     {
       title: "PrivacyShield Pro",
-      description: "Advanced cybersecurity solution for data privacy and protection, featuring real-time monitoring and threat neutralisation.",
-      tags: ["Python", "Security", "Privacy"],
+      description: "Advanced browser extension designed to block intrusive advertisements and protect digital privacy through real-time threat detection.",
+      tags: ["Browser Extension", "Security", "JavaScript"],
       github: "https://github.com/KaranJung/PrivacyShield-Pro",
       live: "#",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
+      image: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&q=80&w=800",
     },
     {
       title: "The Chulo Restro",
@@ -148,7 +148,7 @@ export const PORTFOLIO_DATA = {
       tags: ["Cybersecurity", "Intelligence", "Data Analytics"],
       github: "https://github.com/KaranJung/BreachChecker-Cyber-Threat-Intelligence-Platform",
       live: "#",
-      image: "https://images.unsplash.com/photo-1563986768494-2d254c0b2f42?w=800&q=80",
+      image: "https://images.unsplash.com/photo-1593349480506-8433634cdcbe?auto=format&fit=crop&q=80&w=800",
     },
     {
       title: "Secure-Vault",
