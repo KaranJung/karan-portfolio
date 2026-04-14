@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✧ Karan Jung Budhathoki | Portfolio ✧
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Three.js](https://img.shields.io/badge/Three.js-Visuals-white?style=for-the-badge&logo=three.js)](https://threejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-warm?style=for-the-badge)](LICENSE)
 
-First, run the development server:
+> **"Crafting immersive digital experiences with futuristic design and scalable engineering."**
 
+A premium, high-performance portfolio built with the latest web technologies, featuring real-time 3D visuals, cinematic animations, and a focus on visual excellence.
+
+---
+
+## ⚡ Core Technologies
+
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS 4.0 (Modern Cascade Layers), Vanilla CSS
+- **Motion**: Framer Motion (Orchestrated Animations)
+- **3D Engine**: React Three Fiber + Three.js
+- **Icons**: Lucide React, DevIcons
+
+## 🎨 Immersive Features
+
+- **Kinetic WebGL Background**: Interactive particle fields and geometric forms built with custom Three.js shaders.
+- **Glassmorphic UI**: Sleek, transparent components with backdrop filters for a premium modern aesthetic.
+- **Fluid Responsiveness**: Tailored layouts for every device, from mobile to ultra-wide displays.
+- **Performance First**: Optimized with Next.js Turbopack, lazy-loaded components, and advanced asset management.
+- **Interactive Micro-animations**: Subtle, contextual feedback loops on every interaction to drive engagement.
+
+## 🚀 Projects Showcase
+
+This portfolio highlights a diverse range of expertise across:
+- **Cybersecurity**: PrivacyShield Pro, BreachChecker Intelligence, Secure-Vault.
+- **Full-Stack Systems**: The Chulo Restro, Product Management System, E-Commerce Gateway.
+- **AI & ML**: Smart Supermarket Scanner, Diabetes Prediction ML, Student College Finder.
+- **Creative Tech**: GPS Location Tracker, Premium Agency Branding.
+
+---
+
+## 🛠️ Development
+
+### Prerequisites
+- Node.js (Latest LTS)
+- npm or yarn
+
+### Setup
 ```bash
+# Clone the repository
+git clone https://github.com/KaranJung/portfolio.git
+
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📬 Connectivity
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Portfolio**: [karanjungbudhathoki.com.np](https://karanjungbudhathoki.com.np)
+- **Email**: [underside001@gmail.com](mailto:underside001@gmail.com)
+- **GitHub**: [@KaranJung](https://github.com/KaranJung)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p align="center">
+  Built with ❤️ by Karan Jung Budhathoki
+</p>
