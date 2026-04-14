@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
@@ -12,26 +12,37 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#6366f1",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "Karan Jung Budhathoki | Full-Stack Developer & Creative Technologist",
   description:
-    "Premium full-stack developer portfolio showcasing modern web development, UI/UX design, SEO, branding, and immersive digital experiences from Kathmandu, Nepal.",
+    "Senior Full-Stack Developer specializing in modern web technologies, video editing, graphic design, SEO, and cybersecurity based in Kathmandu, Nepal.",
   keywords:
-    "Karan Jung Budhathoki, Full-Stack Developer, Creative Technologist, Nepal Developer, React Developer, Next.js Portfolio, UI UX Designer, SEO Specialist, WordPress Developer, Cybersecurity, Portfolio 2026",
+    "Karan Jung Budhathoki, Full-Stack Developer, Web Developer, Nepal, React, PHP, Python, WordPress, SEO, Cybersecurity, Video Editor, Graphic Designer",
+  authors: [{ name: "Karan Jung Budhathoki" }],
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
+    type: "website",
     title: "Karan Jung Budhathoki | Full-Stack Developer",
     description:
-      "Premium full-stack developer portfolio showcasing modern web development, UI/UX design, SEO, branding, and immersive digital experiences.",
-    url: "https://karanjungbudhathoki.com.np",
+      "Crafting immersive digital experiences from Kathmandu, Nepal.",
+    url: "https://karanjung.github.io/",
     siteName: "Karan Jung Budhathoki Portfolio",
     locale: "en_US",
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Karan Jung Budhathoki | Full-Stack Developer",
     description:
-      "Premium full-stack developer portfolio showcasing modern web development, UI/UX design, SEO, branding, and immersive digital experiences.",
+      "Crafting immersive digital experiences from Kathmandu, Nepal.",
   },
 };
 
@@ -40,11 +51,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Karan Jung Budhathoki",
+    "url": "https://karanjung.github.io/",
+    "jobTitle": "Full-Stack Developer & Creative Technologist",
+    "sameAs": ["https://github.com/KaranJung"]
+  };
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

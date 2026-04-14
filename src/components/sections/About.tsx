@@ -75,20 +75,25 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
-              whileHover={{ backgroundColor: "rgba(200,184,160,0.04)" }}
-              className="bg-black p-12 group cursor-default transition-colors duration-700"
+              className="bg-black p-12 group cursor-default transition-all duration-700 relative overflow-hidden"
             >
+              {/* Gradient accent line at top */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-warm)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Warm glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-warm)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              
               <motion.div
                 whileHover={{ rotate: -10, scale: 1.1 }}
                 transition={{ duration: 0.3 }}
-                className="text-warm/60 group-hover:text-warm transition-colors duration-500 mb-8"
+                className="text-warm/60 group-hover:text-warm transition-colors duration-500 mb-8 relative z-10"
               >
                 {area.icon}
               </motion.div>
-              <h3 className="text-xl font-heading font-bold text-white mb-4 leading-tight">
+              <h3 className="text-xl font-heading font-bold text-white mb-4 leading-tight relative z-10 group-hover:text-[var(--color-cream)] transition-colors duration-500">
                 {area.title}
               </h3>
-              <p className="text-dim text-[15px] leading-[1.7]">{area.desc}</p>
+              <p className="text-dim text-[15px] leading-[1.7] relative z-10">{area.desc}</p>
             </motion.div>
           ))}
         </div>

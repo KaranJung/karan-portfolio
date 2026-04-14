@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
@@ -15,12 +15,100 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const firstFocusableRef = useRef<HTMLAnchorElement>(null);
+  const lastFocusableRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Active section highlighting with IntersectionObserver
+  useEffect(() => {
+    const observerOptions = {
+      rootMargin: "-50% 0px -50% 0px",
+      threshold: 0,
+    };
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(`#${entry.target.id}`);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    navLinks.forEach((link) => {
+      const sectionId = link.href.replace("#", "");
+      const section = document.getElementById(sectionId);
+      if (section) {
+        observer.observe(section);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Handle smooth scroll with preventDefault
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    },
+    [mobileMenuOpen]
+  );
+
+  // Keyboard trap management for mobile menu
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Close on Escape
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+        return;
+      }
+
+      // Tab trap management
+      if (e.key !== "Tab") return;
+
+      const focusableElements = mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+      );
+
+      if (!focusableElements || focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
 
   return (
     <motion.header
@@ -52,10 +140,19 @@ export default function Navbar() {
             >
               <Link
                 href={link.href}
-                className="text-dim text-sm tracking-[0.15em] uppercase hover:text-white transition-colors duration-500 relative group"
+                onClick={(e) => handleNavClick(e, link.href)}
+                className={`text-sm tracking-[0.15em] uppercase transition-colors duration-500 relative group ${
+                  activeSection === link.href
+                    ? "text-warm"
+                    : "text-dim hover:text-white"
+                }`}
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-warm group-hover:w-full transition-all duration-500" />
+                <span
+                  className={`absolute -bottom-1 left-0 h-px bg-warm transition-all duration-500 ${
+                    activeSection === link.href ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </Link>
             </motion.div>
           ))}
@@ -79,6 +176,8 @@ export default function Navbar() {
         <button
           className="md:hidden text-white"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-expanded={mobileMenuOpen}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -87,6 +186,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            ref={mobileMenuRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -102,9 +202,14 @@ export default function Navbar() {
                   transition={{ delay: idx * 0.1 }}
                 >
                   <Link
+                    ref={idx === 0 ? firstFocusableRef : idx === navLinks.length - 1 ? lastFocusableRef : null}
                     href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-3xl font-heading font-bold text-white hover:text-cream transition-colors"
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`text-3xl font-heading font-bold transition-colors ${
+                      activeSection === link.href
+                        ? "text-warm"
+                        : "text-white hover:text-cream"
+                    }`}
                   >
                     {link.name}
                   </Link>
@@ -112,7 +217,7 @@ export default function Navbar() {
               ))}
               <Link
                 href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, "#contact")}
                 className="mt-4 text-center border border-border px-8 py-4 text-white text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-500"
               >
                 Let&apos;s Talk

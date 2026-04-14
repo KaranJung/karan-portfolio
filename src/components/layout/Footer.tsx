@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowUp } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/constants/data";
 
 function GithubIcon() {
@@ -27,11 +31,36 @@ function InstagramIcon() {
   );
 }
 
+const socialLinks = [
+  {
+    href: PORTFOLIO_DATA.contact.socials.github,
+    icon: GithubIcon,
+    label: "GitHub",
+  },
+  {
+    href: PORTFOLIO_DATA.contact.socials.facebook,
+    icon: FacebookIcon,
+    label: "Facebook",
+  },
+  {
+    href: PORTFOLIO_DATA.contact.socials.instagram,
+    icon: InstagramIcon,
+    label: "Instagram",
+  },
+];
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="border-t border-border py-16">
+    <footer className="relative py-16">
+      {/* Subtle gradient top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-warm/50 to-transparent" />
+
       <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="font-heading text-2xl font-bold tracking-tight text-white">
@@ -44,32 +73,37 @@ export default function Footer() {
           </p>
 
           <div className="flex items-center gap-6">
-            <a
-              href={PORTFOLIO_DATA.contact.socials.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 border border-border flex items-center justify-center text-dim hover:text-warm hover:border-warm/30 transition-all duration-300"
-            >
-              <GithubIcon />
-            </a>
-            <a
-              href={PORTFOLIO_DATA.contact.socials.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 border border-border flex items-center justify-center text-dim hover:text-warm hover:border-warm/30 transition-all duration-300"
-            >
-              <FacebookIcon />
-            </a>
-            <a
-              href={PORTFOLIO_DATA.contact.socials.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 border border-border flex items-center justify-center text-dim hover:text-warm hover:border-warm/30 transition-all duration-300"
-            >
-              <InstagramIcon />
-            </a>
+            {socialLinks.map(({ href, icon: Icon, label }) => (
+              <motion.a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-10 h-10 border border-border flex items-center justify-center text-dim hover:text-warm hover:border-warm/30 transition-all duration-300"
+              >
+                <Icon />
+              </motion.a>
+            ))}
           </div>
         </div>
+
+        {/* Back to top button */}
+        <motion.button
+          onClick={handleBackToTop}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.95 }}
+          className="mx-auto mt-12 flex items-center gap-2 text-sm tracking-[0.15em] uppercase text-warm border border-warm/30 px-6 py-3 hover:bg-warm/10 hover:border-warm/50 transition-all duration-300 group"
+        >
+          <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform duration-300" />
+          Back to Top
+        </motion.button>
       </div>
     </footer>
   );

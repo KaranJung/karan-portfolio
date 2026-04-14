@@ -2,7 +2,22 @@
 
 import { motion } from "framer-motion";
 import { PORTFOLIO_DATA } from "@/constants/data";
-import { Mail, Phone, MapPin, Send, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
+import { useState, useCallback } from "react";
+
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -31,7 +46,116 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Contact() {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  const validateField = useCallback((name: keyof FormData, value: string): string | undefined => {
+    switch (name) {
+      case "name":
+        if (!value.trim()) return "Name is required";
+        if (value.trim().length < 2) return "Name must be at least 2 characters";
+        break;
+      case "email":
+        if (!value.trim()) return "Email is required";
+        if (!emailRegex.test(value)) return "Please enter a valid email address";
+        break;
+      case "subject":
+        if (!value.trim()) return "Subject is required";
+        if (value.trim().length < 3) return "Subject must be at least 3 characters";
+        break;
+      case "message":
+        if (!value.trim()) return "Message is required";
+        if (value.trim().length < 10) return "Message must be at least 10 characters";
+        break;
+    }
+    return undefined;
+  }, []);
+
+  const validateForm = useCallback((): boolean => {
+    const newErrors: FormErrors = {};
+    let isValid = true;
+
+    (Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) {
+        newErrors[key] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  }, [formData, validateField]);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    if (touched[name]) {
+      const error = validateField(name as keyof FormData, value);
+      setErrors((prev) => ({ ...prev, [name]: error }));
+    }
+  }, [touched, validateField]);
+
+  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const error = validateField(name as keyof FormData, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  }, [validateField]);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Mark all fields as touched
+    setTouched({ name: true, email: true, subject: true, message: true });
+    
+    if (!validateForm()) {
+      setSubmitStatus({ type: "error", message: "Please fix the errors above." });
+      return;
+    }
+
+    setIsLoading(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitStatus({ type: "success", message: data.message });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTouched({});
+        setErrors({});
+      } else {
+        setSubmitStatus({ type: "error", message: data.message || "Failed to send message. Please try again." });
+      }
+    } catch {
+      setSubmitStatus({ type: "error", message: "An error occurred. Please try again later." });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [formData, validateForm]);
+
   return (
     <section id="contact" className="py-40 border-t border-border relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px glow-line" />
@@ -152,7 +276,7 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="lg:col-span-7"
           >
-            <form className="space-y-14" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-14" onSubmit={handleSubmit} noValidate>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
                 <div>
                   <label
@@ -164,9 +288,29 @@ export default function Contact() {
                   <input
                     type="text"
                     id="contact-name"
-                    className="w-full bg-transparent border-b border-border px-0 py-4 text-white text-base focus:outline-none focus:border-warm/50 transition-colors duration-500 placeholder:text-subtle"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={touched.name && !!errors.name}
+                    aria-describedby={errors.name ? "name-error" : undefined}
+                    className={`w-full bg-transparent border-b px-0 py-4 text-white text-base focus:outline-none transition-colors duration-500 placeholder:text-subtle ${
+                      touched.name && errors.name
+                        ? "border-[#f87171] focus:border-[#f87171]"
+                        : "border-border focus:border-warm/50"
+                    }`}
                     placeholder="John Doe"
+                    disabled={isLoading}
                   />
+                  {touched.name && errors.name && (
+                    <p
+                      id="name-error"
+                      role="alert"
+                      className="text-[#f87171] text-sm mt-2"
+                    >
+                      {errors.name}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -178,9 +322,29 @@ export default function Contact() {
                   <input
                     type="email"
                     id="contact-email"
-                    className="w-full bg-transparent border-b border-border px-0 py-4 text-white text-base focus:outline-none focus:border-warm/50 transition-colors duration-500 placeholder:text-subtle"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={touched.email && !!errors.email}
+                    aria-describedby={errors.email ? "email-error" : undefined}
+                    className={`w-full bg-transparent border-b px-0 py-4 text-white text-base focus:outline-none transition-colors duration-500 placeholder:text-subtle ${
+                      touched.email && errors.email
+                        ? "border-[#f87171] focus:border-[#f87171]"
+                        : "border-border focus:border-warm/50"
+                    }`}
                     placeholder="john@example.com"
+                    disabled={isLoading}
                   />
+                  {touched.email && errors.email && (
+                    <p
+                      id="email-error"
+                      role="alert"
+                      className="text-[#f87171] text-sm mt-2"
+                    >
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -194,9 +358,29 @@ export default function Contact() {
                 <input
                   type="text"
                   id="contact-subject"
-                  className="w-full bg-transparent border-b border-border px-0 py-4 text-white text-base focus:outline-none focus:border-warm/50 transition-colors duration-500 placeholder:text-subtle"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  aria-invalid={touched.subject && !!errors.subject}
+                  aria-describedby={errors.subject ? "subject-error" : undefined}
+                  className={`w-full bg-transparent border-b px-0 py-4 text-white text-base focus:outline-none transition-colors duration-500 placeholder:text-subtle ${
+                    touched.subject && errors.subject
+                      ? "border-[#f87171] focus:border-[#f87171]"
+                      : "border-border focus:border-warm/50"
+                  }`}
                   placeholder="Project Discussion"
+                  disabled={isLoading}
                 />
+                {touched.subject && errors.subject && (
+                  <p
+                    id="subject-error"
+                    role="alert"
+                    className="text-[#f87171] text-sm mt-2"
+                  >
+                    {errors.subject}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -208,20 +392,63 @@ export default function Contact() {
                 </label>
                 <textarea
                   id="contact-message"
+                  name="message"
                   rows={6}
-                  className="w-full bg-transparent border-b border-border px-0 py-4 text-white text-base focus:outline-none focus:border-warm/50 transition-colors duration-500 resize-none placeholder:text-subtle"
+                  value={formData.message}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  aria-invalid={touched.message && !!errors.message}
+                  aria-describedby={errors.message ? "message-error" : undefined}
+                  className={`w-full bg-transparent border-b px-0 py-4 text-white text-base focus:outline-none transition-colors duration-500 resize-none placeholder:text-subtle ${
+                    touched.message && errors.message
+                      ? "border-[#f87171] focus:border-[#f87171]"
+                      : "border-border focus:border-warm/50"
+                  }`}
                   placeholder="Tell me about your project..."
+                  disabled={isLoading}
                 />
+                {touched.message && errors.message && (
+                  <p
+                    id="message-error"
+                    role="alert"
+                    className="text-[#f87171] text-sm mt-2"
+                  >
+                    {errors.message}
+                  </p>
+                )}
               </div>
+
+              {submitStatus.type && (
+                <div
+                  role="alert"
+                  className={`p-4 text-sm ${
+                    submitStatus.type === "success"
+                      ? "text-[#4ade80] bg-[#4ade80]/10 border border-[#4ade80]/30"
+                      : "text-[#f87171] bg-[#f87171]/10 border border-[#f87171]/30"
+                  }`}
+                >
+                  {submitStatus.message}
+                </div>
+              )}
 
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex items-center gap-4 bg-white text-black px-12 py-5 text-sm font-semibold uppercase tracking-widest hover:bg-cream transition-colors duration-500 mt-4"
+                disabled={isLoading}
+                whileHover={!isLoading ? { scale: 1.02 } : undefined}
+                whileTap={!isLoading ? { scale: 0.98 } : undefined}
+                className="group flex items-center gap-4 bg-white text-black px-12 py-5 text-sm font-semibold uppercase tracking-widest hover:bg-cream transition-colors duration-500 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
-                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                {isLoading ? (
+                  <>
+                    Sending...
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </>
+                )}
               </motion.button>
             </form>
           </motion.div>

@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { PORTFOLIO_DATA } from "@/constants/data";
 import ThreeVisuals from "@/components/ui/ThreeVisuals";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,15 +19,15 @@ export default function Hero() {
   }, []);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 },
+      transition: { staggerChildren: shouldReduceMotion ? 0 : 0.15, delayChildren: shouldReduceMotion ? 0 : 0.3 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const } },
   };
 
@@ -53,21 +54,23 @@ export default function Hero() {
             variants={itemVariants}
             className="text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] font-heading font-bold leading-[0.92] tracking-tight text-white"
           >
-            Karan
-            <br />
-            Jung
-            <br />
-            <span className="text-gradient-warm">Budhathoki</span>
+            <span className="bg-gradient-to-r from-white via-[var(--color-cream)] to-[var(--color-warm)] bg-clip-text text-transparent">
+              Karan
+              <br />
+              Jung
+              <br />
+              Budhathoki
+            </span>
           </motion.h1>
 
           <motion.div variants={itemVariants} className="h-10 overflow-hidden mt-2">
             <AnimatePresence mode="wait">
               <motion.p
                 key={roleIndex}
-                initial={{ y: 40, opacity: 0 }}
+                initial={shouldReduceMotion ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -40, opacity: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                exit={shouldReduceMotion ? { y: 0, opacity: 1 } : { y: -40, opacity: 0 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
                 className="text-warm text-lg tracking-[0.2em] uppercase font-medium"
               >
                 {PORTFOLIO_DATA.identity.roles[roleIndex]}
@@ -77,24 +80,27 @@ export default function Hero() {
 
           <motion.p
             variants={itemVariants}
-            className="text-dim text-lg max-w-lg leading-relaxed"
+            className="text-lg max-w-lg leading-relaxed animate-shimmer"
           >
             {PORTFOLIO_DATA.identity.tagline}
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex items-center gap-8 pt-2">
+          <motion.div variants={itemVariants} className="flex items-center gap-6 pt-2">
+            {/* Filled/Solid Button - View Work */}
             <a
               href="#projects"
-              className="group flex items-center gap-3 bg-white text-black px-10 py-4 text-sm font-semibold uppercase tracking-widest hover:bg-cream transition-all duration-500 hover:shadow-[0_4px_30px_rgba(200,184,160,0.15)]"
+              className="group flex items-center gap-3 bg-[var(--color-warm)] text-black px-10 py-4 text-sm font-semibold uppercase tracking-widest hover:bg-[var(--color-warm-light)] transition-all duration-500 hover:shadow-[0_4px_30px_rgba(200,184,160,0.35)] hover:-translate-y-0.5"
             >
               View Work
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </a>
+            {/* Outline Button - Contact */}
             <a
               href="#contact"
-              className="text-sm uppercase tracking-widest text-dim hover:text-warm transition-colors duration-500 border-b border-subtle hover:border-warm pb-1"
+              className="group flex items-center gap-3 px-10 py-4 text-sm font-semibold uppercase tracking-widest text-white border border-[var(--color-warm)] hover:bg-[var(--color-warm)]/10 hover:border-[var(--color-warm-light)] transition-all duration-500 hover:-translate-y-0.5"
             >
               Contact
+              <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
             </a>
           </motion.div>
 
@@ -106,9 +112,9 @@ export default function Hero() {
             {PORTFOLIO_DATA.identity.stats.map((stat, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
+                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 + idx * 0.15, duration: 0.6 }}
+                transition={{ delay: shouldReduceMotion ? 0 : 1.2 + idx * 0.15, duration: 0.6 }}
               >
                 <span className="text-4xl font-heading font-bold text-white">
                   {stat.value}
@@ -123,23 +129,23 @@ export default function Hero() {
 
         {/* Right: Photo */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, x: 40 }}
+          initial={shouldReduceMotion ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.9, x: 40 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: shouldReduceMotion ? 0 : 1.2, delay: shouldReduceMotion ? 0 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="lg:col-span-5 flex items-center justify-center relative"
         >
           <div className="relative w-[300px] h-[420px] sm:w-[340px] sm:h-[460px] lg:w-[380px] lg:h-[510px]">
             {/* Decorative frame corners */}
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 0.8 }}
+              transition={{ delay: shouldReduceMotion ? 0 : 1.5, duration: 0.8 }}
               className="absolute -top-5 -left-5 w-20 h-20 border-t border-l border-warm/30"
             />
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.7, duration: 0.8 }}
+              transition={{ delay: shouldReduceMotion ? 0 : 1.7, duration: 0.8 }}
               className="absolute -bottom-5 -right-5 w-20 h-20 border-b border-r border-warm/30"
             />
 
@@ -148,7 +154,7 @@ export default function Hero() {
 
             {/* Main image */}
             <motion.div
-              whileHover={{ scale: 1.02 }}
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
               transition={{ duration: 0.6 }}
               className="relative w-full h-full overflow-hidden bg-surface"
             >
@@ -159,6 +165,8 @@ export default function Hero() {
                 sizes="(max-width: 640px) 300px, (max-width: 1024px) 340px, 380px"
                 className="object-cover object-top grayscale-[50%] hover:grayscale-0 transition-all duration-1000"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjIyMjIyIi8+PC9zdmc+"
               />
               {/* Bottom gradient fade */}
               <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black via-black/60 to-transparent" />
@@ -166,9 +174,9 @@ export default function Hero() {
 
             {/* Side label */}
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 2, duration: 0.8 }}
+              transition={{ delay: shouldReduceMotion ? 0 : 2, duration: 0.8 }}
               className="absolute -right-14 top-1/2 -translate-y-1/2 hidden lg:block"
             >
               <p className="text-warm/40 text-[10px] tracking-[0.4em] uppercase -rotate-90 whitespace-nowrap">
@@ -181,20 +189,22 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5 }}
+        transition={{ delay: shouldReduceMotion ? 0 : 2.5 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
         <span className="text-dim text-[10px] tracking-[0.3em] uppercase">
           Scroll
         </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        >
-          <ArrowDown className="w-4 h-4 text-warm/50" />
-        </motion.div>
+        <div className="w-6 h-10 border border-[var(--color-warm)]/30 rounded-full flex justify-center pt-2">
+          <motion.div
+            animate={shouldReduceMotion ? undefined : { y: [0, 12, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          >
+            <div className="w-1 h-2 bg-[var(--color-warm)]/60 rounded-full" />
+          </motion.div>
+        </div>
       </motion.div>
     </section>
   );

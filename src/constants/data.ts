@@ -1,3 +1,60 @@
+// Experience data type
+export interface ExperienceItem {
+  period: string;
+  role: string;
+  company: string;
+  description: string;
+}
+
+// Education data type
+export interface EducationItem {
+  period: string;
+  degree: string;
+  institution: string;
+  description: string;
+}
+
+// Experience data
+export const experience: ExperienceItem[] = [
+  {
+    period: "2024 - Present",
+    role: "Senior Creative Technologist",
+    company: "Freelance / Independent",
+    description:
+      "Architecting premium web experiences, pushing the boundaries of 3D motion, and building scalable full-stack applications for global clients.",
+  },
+  {
+    period: "2022 - 2024",
+    role: "Full-Stack Developer",
+    company: "Tech Agency",
+    description:
+      "Led the development of bespoke CRM dashboards and high-performance Laravel/React ecosystems. Managed SEO audits and technical performance optimization.",
+  },
+  {
+    period: "2021 - 2022",
+    role: "UI/UX Designer & Web Developer",
+    company: "Creative Studio",
+    description:
+      "Designed responsive, accessible, and high-conversion interfaces. Integrated modern styling frameworks to unify brand identities.",
+  },
+];
+
+// Education data
+export const education: EducationItem[] = [
+  {
+    period: "2020 - 2024",
+    degree: "Bachelor in Computer Science",
+    institution: "Tribune University",
+    description: "Focused on software engineering, data structures, and web development.",
+  },
+  {
+    period: "2018 - 2020",
+    degree: "High School Diploma (+2 Science)",
+    institution: "National School of Sciences",
+    description: "Specialized in physics, mathematics, and computer science.",
+  },
+];
+
 export const PORTFOLIO_DATA = {
   identity: {
     fullName: "Karan Jung Budhathoki",
@@ -34,28 +91,28 @@ export const PORTFOLIO_DATA = {
   },
   skills: {
     frontend: [
-      { name: "React", icon: "react" },
-      { name: "Next.js", icon: "nextjs" },
-      { name: "TypeScript", icon: "typescript" },
-      { name: "Tailwind CSS", icon: "tailwind" },
+      { name: "React", icon: "react", level: 5 },
+      { name: "Next.js", icon: "nextjs", level: 5 },
+      { name: "TypeScript", icon: "typescript", level: 4 },
+      { name: "Tailwind CSS", icon: "tailwind", level: 5 },
     ],
     backend: [
-      { name: "PHP", icon: "php" },
-      { name: "Node.js", icon: "nodejs" },
-      { name: "Laravel", icon: "laravel" },
-      { name: "MySQL", icon: "mysql" },
+      { name: "PHP", icon: "php", level: 4 },
+      { name: "Node.js", icon: "nodejs", level: 4 },
+      { name: "Laravel", icon: "laravel", level: 4 },
+      { name: "MySQL", icon: "mysql", level: 4 },
     ],
     tools: [
-      { name: "Git", icon: "git" },
-      { name: "Docker", icon: "docker" },
-      { name: "Vercel", icon: "vercel" },
-      { name: "Cloudflare", icon: "cloudflare" },
+      { name: "Git", icon: "git", level: 5 },
+      { name: "Docker", icon: "docker", level: 3 },
+      { name: "Vercel", icon: "vercel", level: 5 },
+      { name: "Cloudflare", icon: "cloudflare", level: 4 },
     ],
     creative: [
-      { name: "Photoshop", icon: "photoshop" },
-      { name: "Premiere Pro", icon: "premiere" },
-      { name: "Figma", icon: "figma" },
-      { name: "Canva", icon: "canva" },
+      { name: "Photoshop", icon: "photoshop", level: 5 },
+      { name: "Premiere Pro", icon: "premiere", level: 4 },
+      { name: "Figma", icon: "figma", level: 5 },
+      { name: "Canva", icon: "canva", level: 5 },
     ],
   },
   services: [

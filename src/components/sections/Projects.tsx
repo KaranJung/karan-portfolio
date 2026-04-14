@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { PORTFOLIO_DATA } from "@/constants/data";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
@@ -15,13 +15,26 @@ function GithubIcon() {
 }
 
 export default function Projects() {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Helper to optimize Unsplash URLs
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes('images.unsplash.com')) {
+      // Replace or add w and q parameters
+      const optimized = url.replace(/[?&]w=\d+/g, '').replace(/[?&]q=\d+/g, '');
+      const separator = optimized.includes('?') ? '&' : '?';
+      return `${optimized}${separator}w=600&q=75`;
+    }
+    return url;
+  };
+
   return (
     <section id="projects" className="py-40 border-t border-border relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px glow-line" />
 
       <div className="max-w-[1400px] mx-auto px-8 lg:px-16">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -41,27 +54,32 @@ export default function Projects() {
           {PORTFOLIO_DATA.projects.map((project, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 30 }}
+              initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
+              transition={{ 
+                duration: 0.7, 
+                delay: shouldReduceMotion ? 0 : idx * 0.15, 
+                ease: [0.25, 0.46, 0.45, 0.94] 
+              }}
               className="group cursor-pointer"
             >
               {/* Project Image */}
               <div className="relative w-full h-[280px] md:h-[320px] overflow-hidden bg-surface mb-8">
                 <Image
-                  src={project.image}
+                  src={optimizeImageUrl(project.image)}
                   alt={project.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover grayscale-[70%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  loading="lazy"
                 />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-500" />
 
-                {/* Number badge */}
+                {/* Enhanced Number badge */}
                 <div className="absolute top-6 left-6">
-                  <span className="text-warm/50 text-sm font-mono">
+                  <span className="text-[var(--color-warm)] text-sm font-mono bg-black/40 px-3 py-1.5 backdrop-blur-sm border border-[var(--color-warm)]/20">
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                 </div>

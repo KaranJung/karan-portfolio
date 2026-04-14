@@ -49,8 +49,11 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: idx * 0.06, ease: "easeOut" }}
-              whileHover={{ backgroundColor: "rgba(200,184,160,0.04)" }}
-              className="bg-black p-10 lg:p-12 group cursor-default transition-colors duration-700 relative"
+              whileHover={{ 
+                y: -4,
+                boxShadow: "0 20px 40px -15px rgba(200, 184, 160, 0.15)"
+              }}
+              className="bg-black p-10 lg:p-12 group cursor-default transition-all duration-500 relative"
             >
               <span className="absolute top-8 right-8 text-subtle/50 text-[11px] font-mono">
                 {String(idx + 1).padStart(2, "0")}
@@ -73,7 +76,8 @@ export default function Services() {
               </p>
 
               <div className="flex items-center gap-2 text-warm/40 text-xs tracking-wider uppercase opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                Learn more <ArrowUpRight className="w-3 h-3" />
+                Learn more 
+                <ArrowUpRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
               </div>
             </motion.div>
           ))}
