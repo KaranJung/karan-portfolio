@@ -20,34 +20,34 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Karan Jung Budhathoki | Full-Stack Developer & Creative Technologist",
+  title: "Karan Jung | Full-Stack Developer & Creative Technologist",
   description:
-    "Senior Full-Stack Developer specializing in modern web technologies, video editing, graphic design, SEO, and cybersecurity based in Kathmandu, Nepal.",
+    "Senior Full-Stack Developer specializing in modern web technologies, video editing, graphic design, SEO, and cybersecurity based in New York, NY.",
   keywords:
-    "Karan Jung Budhathoki, Full-Stack Developer, Web Developer, Nepal, React, PHP, Python, WordPress, SEO, Cybersecurity, Video Editor, Graphic Designer",
-  authors: [{ name: "Karan Jung Budhathoki" }],
+    "Karan Jung, Full-Stack Developer, Web Developer, USA, React, PHP, Python, WordPress, SEO, Cybersecurity, Video Editor, Graphic Designer",
+  authors: [{ name: "Karan Jung" }],
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
     type: "website",
-    title: "Karan Jung Budhathoki | Full-Stack Developer",
+    title: "Karan Jung | Full-Stack Developer",
     description:
-      "Crafting immersive digital experiences from Kathmandu, Nepal.",
+      "Crafting immersive digital experiences from New York, NY.",
     url: "https://karanjung.github.io/",
-    siteName: "Karan Jung Budhathoki Portfolio",
+    siteName: "Karan Jung Portfolio",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Karan Jung Budhathoki | Full-Stack Developer",
+    title: "Karan Jung | Full-Stack Developer",
     description:
-      "Crafting immersive digital experiences from Kathmandu, Nepal.",
+      "Crafting immersive digital experiences from New York, NY.",
   },
   icons: {
-    icon: "/logo.svg",
-    apple: "/logo.svg",
+    icon: "/icon.jpg",
+    apple: "/icon.jpg",
   },
   other: {
     "google-adsense-account": "ca-pub-7749421058759119",
@@ -62,7 +62,7 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Karan Jung Budhathoki",
+    "name": "Karan Jung",
     "url": "https://karanjung.github.io/",
     "jobTitle": "Full-Stack Developer & Creative Technologist",
     "sameAs": ["https://github.com/KaranJung"]

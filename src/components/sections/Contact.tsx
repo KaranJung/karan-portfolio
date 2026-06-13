@@ -247,24 +247,6 @@ export default function Contact() {
               >
                 <GithubIcon />
               </motion.a>
-              <motion.a
-                href={PORTFOLIO_DATA.contact.socials.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -3 }}
-                className="w-12 h-12 border border-border flex items-center justify-center text-dim hover:text-white hover:border-white/30 transition-all duration-300"
-              >
-                <FacebookIcon />
-              </motion.a>
-              <motion.a
-                href={PORTFOLIO_DATA.contact.socials.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -3 }}
-                className="w-12 h-12 border border-border flex items-center justify-center text-dim hover:text-white hover:border-white/30 transition-all duration-300"
-              >
-                <InstagramIcon />
-              </motion.a>
             </div>
           </motion.div>
 

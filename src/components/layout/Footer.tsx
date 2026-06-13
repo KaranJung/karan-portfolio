@@ -37,16 +37,6 @@ const socialLinks = [
     icon: GithubIcon,
     label: "GitHub",
   },
-  {
-    href: PORTFOLIO_DATA.contact.socials.facebook,
-    icon: FacebookIcon,
-    label: "Facebook",
-  },
-  {
-    href: PORTFOLIO_DATA.contact.socials.instagram,
-    icon: InstagramIcon,
-    label: "Instagram",
-  },
 ];
 
 export default function Footer() {

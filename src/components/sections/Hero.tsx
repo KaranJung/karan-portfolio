@@ -58,8 +58,6 @@ export default function Hero() {
               Karan
               <br />
               Jung
-              <br />
-              Budhathoki
             </span>
           </motion.h1>
 
@@ -159,8 +157,8 @@ export default function Hero() {
               className="relative w-full h-full overflow-hidden bg-surface"
             >
               <Image
-                src="/karan.png"
-                alt="Karan Jung Budhathoki"
+                src="/avatar.jpg"
+                alt="Karan Jung"
                 fill
                 sizes="(max-width: 640px) 300px, (max-width: 1024px) 340px, 380px"
                 className="object-cover object-top grayscale-[50%] hover:grayscale-0 transition-all duration-1000"
@@ -180,7 +178,7 @@ export default function Hero() {
               className="absolute -right-14 top-1/2 -translate-y-1/2 hidden lg:block"
             >
               <p className="text-warm/40 text-[10px] tracking-[0.4em] uppercase -rotate-90 whitespace-nowrap">
-                Kathmandu, Nepal
+                New York, NY
               </p>
             </motion.div>
           </div>

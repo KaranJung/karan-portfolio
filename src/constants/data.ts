@@ -44,23 +44,23 @@ export const education: EducationItem[] = [
   {
     period: "2020 - 2024",
     degree: "Bachelor in Computer Science",
-    institution: "Tribune University",
+    institution: "State University",
     description: "Focused on software engineering, data structures, and web development.",
   },
   {
     period: "2018 - 2020",
     degree: "High School Diploma (+2 Science)",
-    institution: "National School of Sciences",
+    institution: "Science High School",
     description: "Specialized in physics, mathematics, and computer science.",
   },
 ];
 
 export const PORTFOLIO_DATA = {
   identity: {
-    fullName: "Karan Jung Budhathoki",
+    fullName: "Karan Jung",
     brandLogo: "<KJB />",
     title: "Full-Stack Developer & Creative Technologist",
-    location: "Kathmandu, Nepal",
+    location: "New York, NY",
     tagline:
       "Crafting immersive digital experiences with futuristic design and scalable engineering.",
     summary:
@@ -79,14 +79,12 @@ export const PORTFOLIO_DATA = {
     ],
   },
   contact: {
-    email: "underside001@gmail.com",
-    phone: "+977-9842388429",
-    address: "Koteshwor, Kathmandu, Nepal",
-    website: "https://karanjungbudhathoki.com.np",
+    email: "karan.jung@example.com",
+    phone: "+1 (555) 123-4567",
+    address: "New York, NY, USA",
+    website: "https://karanjung.dev",
     socials: {
       github: "https://github.com/KaranJung",
-      facebook: "https://www.facebook.com/karanjung.budhathoki.16",
-      instagram: "https://www.instagram.com/karan_jung_budhathoki/",
     },
   },
   skills: {
